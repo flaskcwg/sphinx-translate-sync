@@ -1,6 +1,9 @@
 name: 'Update Sphinx Translations'
 description: 'GitHub Action to automatically update Sphinx translations from a source repository.'
 author: 'Phebe Polk'
+branding:
+  icon: 'globe'
+  color: 'blue'
 inputs:
   source_repo:
     description: 'The URL of the source repository to fetch translations from.'
