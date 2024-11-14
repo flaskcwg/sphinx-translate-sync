@@ -1,0 +1,21 @@
+name: 'Example: Update Sphinx Translations'
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  update-translations:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout the repository
+      uses: actions/checkout@v3
+
+    - name: Update translations
+      uses: your-org/update-sphinx-translations-action@v1
+      with:
+        source_repo: 'https://github.com/your-org/source-repo.git'
+        target_branch: 'main'
+        languages: 'en,fr,de'

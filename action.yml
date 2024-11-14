@@ -1,53 +1,45 @@
-name: Update Sphinx Translations
+name: 'Update Sphinx Translations'
+description: 'GitHub Action to automatically update Sphinx translations from a source repository.'
+author: 'Your Name <your-email@example.com>'
+inputs:
+  source_repo:
+    description: 'The URL of the source repository to fetch translations from.'
+    required: true
+    default: 'https://github.com/your-org/source-repo.git'
+  target_branch:
+    description: 'The branch to push the updated translations to.'
+    required: false
+    default: 'main'
+  languages:
+    description: 'Comma-separated list of languages to update (e.g., en,fr,de).'
+    required: true
+    default: 'en'
 
-on:
-  push:
-    branches:
-      - main  # Trigger this workflow on push to the main branch
-  schedule:
-    - cron: '0 0 * * 0'  # Optional: Schedule it to run every Sunday (cron format)
+runs:
+  using: 'docker'
+  image: 'docker://python:3.9'
+  entrypoint: 'bash'
 
-jobs:
-  update-translations:
-    runs-on: ubuntu-latest
-    
-    steps:
-    - name: Checkout repository
-      uses: actions/checkout@v3
-
-    - name: Set up Python
-      uses: actions/setup-python@v4
-      with:
-        python-version: '3.x'
-
-    - name: Install dependencies
-      run: |
-        python -m pip install --upgrade pip
-        pip install sphinx sphinx-intl
-
-    - name: Fetch the latest translations from source repository
-      run: |
-        # Fetch the source repository containing the original translations
-        git clone --single-branch https://github.com/your-org/source-repo.git /tmp/source-repo
+  # Command to run the update action
+  args:
+    - 'bash'
+    - '-c'
+    - |
+        git clone --single-branch $INPUT_SOURCE_REPO /tmp/source-repo
         cd /tmp/source-repo
-        git pull origin main  # Ensure the latest updates are fetched
+        git pull origin $GITHUB_REF
 
-    - name: Copy translation files to the target repository
-      run: |
-        # Copy the latest .pot/.po files from the source repository to the current repository
         cp -r /tmp/source-repo/docs/locale/* ./docs/locale/
-
-    - name: Update translations using sphinx-intl
-      run: |
+        
         cd docs
-        sphinx-intl update -p build -l en -l fr -l de  # Add all required language codes
+        sphinx-intl update -p build -l $INPUT_LANGUAGES
 
-    - name: Commit and push updated translations
-      run: |
         git config user.name "GitHub Action"
         git config user.email "action@github.com"
         git add docs/locale
         git commit -m "Update translations from source repository"
-        git push origin main
-      env:
-        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        git push origin $INPUT_TARGET_BRANCH
+
+outputs:
+  updated_files:
+    description: 'List of updated translation files'
