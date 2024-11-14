@@ -14,8 +14,8 @@ jobs:
       uses: actions/checkout@v3
 
     - name: Update translations
-      uses: your-org/update-sphinx-translations-action@v1
+      uses: flaskcwg/sphinx-translate-sync@v1
       with:
-        source_repo: 'https://github.com/your-org/source-repo.git'
+        source_repo: 'https://github.com/flaskcwg/flask-docs-es'
         target_branch: 'main'
         languages: 'en,fr,de'

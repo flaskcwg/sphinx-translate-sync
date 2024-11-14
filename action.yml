@@ -1,11 +1,11 @@
 name: 'Update Sphinx Translations'
 description: 'GitHub Action to automatically update Sphinx translations from a source repository.'
-author: 'Your Name <your-email@example.com>'
+author: 'Phebe Polk'
 inputs:
   source_repo:
     description: 'The URL of the source repository to fetch translations from.'
     required: true
-    default: 'https://github.com/your-org/source-repo.git'
+    default: 'https://github.com/pallets/flask.git'
   target_branch:
     description: 'The branch to push the updated translations to.'
     required: false
