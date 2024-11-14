@@ -11,10 +11,10 @@ jobs:
 
     steps:
     - name: Checkout the repository
-      uses: actions/checkout@1.0.0
+      uses: actions/checkout@v1
 
     - name: Update translations
-      uses: flaskcwg/sphinx-translate-sync@v1
+      uses: flaskcwg/sphinx-translate-sync@1.0.0
       with:
         source_repo: 'https://github.com/flaskcwg/flask-docs-es'
         target_branch: 'main'
